@@ -98,10 +98,10 @@ if __name__ == '__main__':
 
     base_model, model = get_model(img_h, train_img_gen.get_output_size())
 
-    modelPath = './models/pretrain_model/keras.h5'
+    modelPath = './models/keras_model'
     if os.path.exists(modelPath):
         print("Loading model weights...")
-        base_model.load_weights(modelPath)
+        base_model.load_weights(modelPath, by_name=True)
         print('done!')
     keras.datasets.mnist.load_data()
     #test_func = K.function([basemodel.input], [basemodel.output])
