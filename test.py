@@ -3,7 +3,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('file', type=str, default='', help="path of images or dir")
 parser.add_argument('--model', type=str, default='models/keras_model', help="keras model(include weights and model) path")
-parser.add_argument('--label', type=str, default='models/label_map.txt', help="label to text")
+parser.add_argument('--label_map', type=str, default='models/label_map.txt', help="label to text")
 parser.add_argument('--show', type=bool, default=True, help="show image when after test by UI")
 args = parser.parse_args()
 import os
@@ -14,7 +14,8 @@ import tensorflow.keras.backend as K
 model = tf.keras.models.load_model(args.model)
 with open(args.label_map, "r") as f:
     alphabet = f.read()
-nclass = len(alphabet) + 1
+nclass = len(alphabet)
+print("class size is: ", nclass)
 # Reverse translation of numerical classes back to characters
 def labels_to_text(labels):
     ret = []
@@ -33,6 +34,8 @@ def decode(pred):
     print(pred_text)
     for i in range(len(pred_text)):
         if pred_text[i] != nclass - 1 and ((not (i > 0 and pred_text[i] == pred_text[i - 1])) or (i > 1 and pred_text[i] == pred_text[i - 2])):
+            print(len(alphabet))
+            print(pred_text[i])
             char_list.append(alphabet[pred_text[i]])
     return u''.join(char_list)
 def predict(img):
@@ -76,6 +79,7 @@ def test_file(file_path, ishow=True):
         cv2.waitKey(0)
 
 if __name__ == '__main__':
+    print(args.file)
     assert os.path.exists(args.file)
 
     if os.path.isdir(args.file):

@@ -114,7 +114,11 @@ if __name__ == '__main__':
         epochs=10,
         validation_data=test_img_gen.next_val(),
         validation_steps=5,
-        callbacks=[viz_cb, train_img_gen])
+        callbacks=[viz_cb, train_img_gen],
+        workers=16,
+        use_multiprocessing=True,
+
+    )
     #model.fit_generator(
     #    train_img_gen.next_train(),
     #    steps_per_epoch = 3607567 // batch_size,
@@ -122,5 +126,7 @@ if __name__ == '__main__':
     #	initial_epoch = 0,
     #	validation_data = test_img_gen.next_val(),
     #	validation_steps = 36440 // batch_size,
-    #	callbacks = [viz_cb, test_img_gen])
+    #	callbacks = [viz_cb, train_img_gen],
+    #   workers=1,
+    #   use_multiprocessing = True)
 
