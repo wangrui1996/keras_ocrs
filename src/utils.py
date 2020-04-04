@@ -25,6 +25,8 @@ def text_to_labels(text):
     for char in text:
         if char in not_care:
             continue
+        if char == "：":
+            char = ":"
         ret.append(alphabet.find(char))
         if ret[-1] == -1:
             print("-1 is : ",char)
