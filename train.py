@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
     user_root_path = os.environ['HOME']
     ocrs_dataset_path = os.path.join(user_root_path, "Dataset", "ocrs")
-    train_img_gen.set_dataset(os.path.join(ocrs_dataset_path, "images"), os.path.join(ocrs_dataset_path, "data_train.txt"))
+    train_img_gen.set_dataset(os.path.join(ocrs_dataset_path, "images"), os.path.join(ocrs_dataset_path, "custom_data_train.txt"))
     test_img_gen.set_dataset(os.path.join(ocrs_dataset_path, "images"), os.path.join(ocrs_dataset_path, "data_test.txt"))
 
     base_model, model = get_model(img_h, train_img_gen.get_output_size())
