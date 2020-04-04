@@ -8,7 +8,7 @@ custom_images_path = os.path.join(dataset_path, "custom_images")
 if not os.path.exists(custom_images_path):
     os.mkdir(custom_images_path)
 
-shutil.copy(dataset_label_txt_path, new_label_txt_path)
+#shutil.copy(dataset_label_txt_path, new_label_txt_path)
 
 
 for file in os.listdir(custom_images_path):

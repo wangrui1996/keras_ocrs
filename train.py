@@ -103,7 +103,6 @@ if __name__ == '__main__':
         print("Loading model weights...")
         base_model.load_weights(modelPath, by_name=True)
         print('done!')
-    keras.datasets.mnist.load_data()
     #test_func = K.function([basemodel.input], [basemodel.output])
     #viz_cb = VizCallback(test_func, model_save_path=model_save_path)
     viz_cb = VizCallback(base_model, model_save_path=model_save_path)
