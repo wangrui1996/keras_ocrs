@@ -8,15 +8,19 @@ custom_images_path = os.path.join(dataset_path, "custom_images")
 if not os.path.exists(custom_images_path):
     os.mkdir(custom_images_path)
 
-shutil.copy(dataset_label_txt_path, new_label_txt_path)
+#shutil.copy(dataset_label_txt_path, new_label_txt_path)
 
 custom_image_files = os.listdir(custom_images_path)
 
 custom_number = len(custom_image_files)
-
+max_label_len = -1
 def add(image_files):
     for file in image_files:
-        label = os.path.splitext(file)[0].split("_")[1]
+        idx_ = os.path.splitext(file)[0].find("_")
+        label = os.path.splitext(file)[0][idx_+1:]
+        global max_label_len
+        if len(label) > max_label_len:
+            max_label_len = len(label)
         with open(new_label_txt_path, "a") as output_file:
             output_file.writelines("{} {}\n".format(file, label))
     #label = str(file).split(".")[0].split("_")[1]
@@ -28,6 +32,5 @@ times = 3600000//(custom_number * 100)
 for i in range(times):
     add(custom_image_files)
 
-
-
+print(max_label_len)
 

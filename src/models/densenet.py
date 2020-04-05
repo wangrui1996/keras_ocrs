@@ -24,7 +24,7 @@ def dense_block(x, nb_layers, nb_filter, growth_rate, droput_rate=0.2, weight_de
         nb_filter += growth_rate
     return x, nb_filter
 
-def transition_block(input, nb_filter, dropout_rate=None, pooltype=1, weight_decay=1e-4):
+def transition_block(input, nb_filter, use_pool = True, dropout_rate=None, pooltype=1, weight_decay=1e-4):
     x = BatchNormalization(axis=-1, epsilon=1.1e-5)(input)
     x = Activation('relu')(x)
     x = Conv2D(nb_filter, (1, 1), kernel_initializer='he_normal', padding='same', use_bias=False,
@@ -32,14 +32,14 @@ def transition_block(input, nb_filter, dropout_rate=None, pooltype=1, weight_dec
 
     if(dropout_rate):
         x = Dropout(dropout_rate)(x)
-
-    if(pooltype == 2):
-        x = AveragePooling2D((2, 2), strides=(2, 2))(x)
-    elif(pooltype == 1):
-        x = ZeroPadding2D(padding = (0, 1))(x)
-        x = AveragePooling2D((2, 2), strides=(2, 1))(x)
-    elif(pooltype == 3):
-        x = AveragePooling2D((2, 2), strides=(2, 1))(x)
+    if use_pool:
+        if(pooltype == 2):
+            x = AveragePooling2D((2, 2), strides=(2, 2))(x)
+        elif(pooltype == 1):
+            x = ZeroPadding2D(padding = (0, 1))(x)
+            x = AveragePooling2D((2, 2), strides=(2, 1))(x)
+        elif(pooltype == 3):
+            x = AveragePooling2D((2, 2), strides=(2, 1))(x)
     return x, nb_filter
 
 def dense_cnn(input, nclass):
@@ -55,12 +55,12 @@ def dense_cnn(input, nclass):
     # 64 + 8 * 8 = 128
     x, _nb_filter = dense_block(x, 8, _nb_filter, 8, None, _weight_decay)
     # 128
-    x, _nb_filter = transition_block(x, 128, _dropout_rate, 2, _weight_decay)
+    x, _nb_filter = transition_block(x, 128, True, _dropout_rate, 2, _weight_decay)
 
     # 128 + 8 * 8 = 192
     x, _nb_filter = dense_block(x, 8, _nb_filter, 8, None, _weight_decay)
     # 192 -> 128
-    x, _nb_filter = transition_block(x, 128, _dropout_rate, 2, _weight_decay)
+    x, _nb_filter = transition_block(x, 128, False, _dropout_rate, 2, _weight_decay)
 
     # 128 + 8 * 8 = 192
     x, _nb_filter = dense_block(x, 8, _nb_filter, 8, None, _weight_decay)

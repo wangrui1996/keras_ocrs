@@ -106,7 +106,7 @@ class TextImageGenerator(keras.callbacks.Callback):
 
     def __init__(self, minibatch_size,
                  img_w, img_h, downsample_factor,
-                 absolute_max_string_len=20, label_map="label_map.txt"):
+                 absolute_max_string_len=27, label_map="label_map.txt"):
 
         self.minibatch_size = minibatch_size
         self.img_w = img_w
