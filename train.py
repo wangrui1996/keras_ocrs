@@ -76,7 +76,7 @@ def get_model(img_h, nclass):
 if __name__ == '__main__':
     img_w = 280
     img_h = 32
-    batch_size = 32
+    batch_size = 128
     model_save_path = "./save_models"
     train_img_gen = TextImageGenerator(
         minibatch_size=batch_size,

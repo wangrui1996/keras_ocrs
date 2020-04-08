@@ -28,9 +28,9 @@ def add(image_files):
     #    print(label)
 
 times = 3600000//(custom_number * 100)
+add(custom_image_files)
+#for i in range(times):
+#    add(custom_image_files)
 
-for i in range(times):
-    add(custom_image_files)
-
-print(max_label_len)
+#print(max_label_len)
 
