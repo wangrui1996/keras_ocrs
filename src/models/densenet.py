@@ -60,7 +60,7 @@ def dense_cnn(input, nclass):
     # 128 + 8 * 8 = 192
     x, _nb_filter = dense_block(x, 8, _nb_filter, 8, None, _weight_decay)
     # 192 -> 128
-    x, _nb_filter = transition_block(x, 128, False, _dropout_rate, 2, _weight_decay)
+    x, _nb_filter = transition_block(x, 128, False, _dropout_rate, 1, _weight_decay)
 
     # 128 + 8 * 8 = 192
     x, _nb_filter = dense_block(x, 8, _nb_filter, 8, None, _weight_decay)

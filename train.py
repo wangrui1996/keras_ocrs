@@ -82,14 +82,14 @@ if __name__ == '__main__':
         batch_size=batch_size,
         img_w=img_w,
         img_h=img_h,
-        downsample_factor=8,
+        downsample_factor=4,
         label_map = os.path.join(os.getcwd(), os.path.join(model_save_path, "label_map.txt"))
     )
     test_img_gen = DataGenerator(
         batch_size=batch_size,
         img_w=img_w,
         img_h=img_h,
-        downsample_factor=8)
+        downsample_factor=4)
 
     user_root_path = os.environ['HOME']
     ocrs_dataset_path = os.path.join(user_root_path, "Dataset", "ocrs")

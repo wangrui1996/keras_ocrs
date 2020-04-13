@@ -275,9 +275,13 @@ class DataGenerator(keras.utils.Sequence):
 
 
     def on_train_begin(self):
+        print("开启了")
+        print("")
         self.data_argument = lambda image: data_argument(image)
 
     def on_epoch_begin(self, epoch):
+        print("结束了")
+        print("")
         # rebind the paint function to implement curriculum learning
         if 2 <= epoch < 3:
             self.data_argument = lambda image: data_argument(image, brightness_contrast=True)
