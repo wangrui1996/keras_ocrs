@@ -15,7 +15,7 @@ from tensorflow.python.keras.layers import Input
 from tensorflow.python.keras.layers.core import Reshape, Masking, Lambda, Permute
 from tensorflow.python.keras.models import Model
 from src.models import densenet
-from src.utils import TextImageGenerator
+from src.utils import DataGenerator
 
 np.random.seed(55)
 
@@ -78,23 +78,23 @@ if __name__ == '__main__':
     img_h = 32
     batch_size = 128
     model_save_path = "./save_models"
-    train_img_gen = TextImageGenerator(
-        minibatch_size=batch_size,
+    train_img_gen = DataGenerator(
+        batch_size=batch_size,
         img_w=img_w,
         img_h=img_h,
-        downsample_factor=4,
+        downsample_factor=8,
         label_map = os.path.join(os.getcwd(), os.path.join(model_save_path, "label_map.txt"))
     )
-    test_img_gen = TextImageGenerator(
-        minibatch_size=batch_size,
+    test_img_gen = DataGenerator(
+        batch_size=batch_size,
         img_w=img_w,
         img_h=img_h,
-        downsample_factor=4)
+        downsample_factor=8)
 
     user_root_path = os.environ['HOME']
     ocrs_dataset_path = os.path.join(user_root_path, "Dataset", "ocrs")
-    train_img_gen.set_dataset(os.path.join(ocrs_dataset_path, "images"), os.path.join(ocrs_dataset_path, "custom_data_train.txt"))
-    test_img_gen.set_dataset(os.path.join(ocrs_dataset_path, "images"), os.path.join(ocrs_dataset_path, "data_test.txt"))
+    train_img_gen.set_dataset(os.path.join(ocrs_dataset_path, "images"), os.path.join(ocrs_dataset_path, "custom_data_train.txt"), train=True)
+    test_img_gen.set_dataset(os.path.join(ocrs_dataset_path, "images"), os.path.join(ocrs_dataset_path, "data_test.txt"), train=False)
 
     base_model, model = get_model(img_h, train_img_gen.get_output_size())
 
@@ -108,13 +108,13 @@ if __name__ == '__main__':
     viz_cb = VizCallback(base_model, model_save_path=model_save_path)
     print('-----------Start training-----------')
     model.fit_generator(
-        generator=train_img_gen.next_train(),
+        generator=train_img_gen,
         steps_per_epoch=5,
         epochs=10,
-        validation_data=test_img_gen.next_val(),
+        validation_data=test_img_gen,
         validation_steps=5,
-        callbacks=[viz_cb, train_img_gen],
-        workers=16,
+        callbacks=[viz_cb],
+        workers=12,
         use_multiprocessing=True,
 
     )
